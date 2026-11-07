@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DestaHoops Hse — Elite Basketball Coaching</title>
+<style>
+  :root{
+    --navy:#0b1220; --navy2:#101b2e; --orange:#ff6b1a; --orange2:#ff8c42;
+    --gold:#ffb703; --ice:#eef3fb; --muted:#93a3bd; --line:rgba(255,255,255,.08);
+    --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font);background:var(--navy);color:#e9eef7;line-height:1.6;overflow-x:hidden}
+  img{max-width:100%}
+  a{color:inherit;text-decoration:none}
+  .wrap{width:min(1180px,92%);margin:0 auto}
+  section{padding:90px 0}
+  .kicker{color:var(--orange);font-weight:700;letter-spacing:.22em;text-transform:uppercase;font-size:.78rem}
+  h2{font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.15;margin:.4rem 0 1rem}
+  .sub{color:var(--muted);max-width:640px}
+  .btn{display:inline-block;padding:.85rem 1.7rem;border-radius:999px;font-weight:700;font-size:.95rem;cursor:pointer;border:0;transition:.25s}
+  .btn-primary{background:linear-gradient(135deg,var(--orange),var(--orange2));color:#fff;box-shadow:0 8px 24px rgba(255,107,26,.35)}
+  .btn-primary:hover{transform:translateY(-2px)}
+  .btn-ghost{border:1.5px solid var(--line);color:#fff;background:transparent}
+  .btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+
+  /* NAV */
+  header{position:fixed;inset:0 0 auto 0;z-index:100;transition:.3s;padding:14px 0}
+  header.scrolled{background:rgba(11,18,32,.92);backdrop-filter:blur(12px);padding:8px 0;box-shadow:0 6px 30px rgba(0,0,0,.35)}
+  .nav{display:flex;align-items:center;justify-content:space-between}
+  .logo{display:flex;align-items:center;gap:.6rem;font-weight:800;font-size:1.25rem;letter-spacing:.02em}
+  .logo svg{width:38px;height:38px}
+  .logo span{color:var(--orange)}
+  nav ul{display:flex;gap:1.6rem;list-style:none}
+  nav a{font-size:.92rem;color:#cdd8ea;transition:.2s;position:relative}
+  nav a:hover{color:#fff}
+  nav a::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:2px;background:var(--orange);transition:.25s}
+  nav a:hover::after{width:100%}
+  .nav-cta{display:flex;align-items:center;gap:1rem}
+  .hamburger{display:none;background:none;border:0;color:#fff;font-size:1.7rem;cursor:pointer}
+
+  /* HERO */
+  .hero{min-height:100vh;display:flex;align-items:center;position:relative;padding:120px 0 80px;
+    background:radial-gradient(1100px 500px at 80% -10%,rgba(255,107,26,.18),transparent 60%),
+               radial-gradient(700px 400px at 5% 100%,rgba(20,60,140,.35),transparent 60%),var(--navy)}
+  .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:3rem;align-items:center}
+  .hero h1{font-size:clamp(2.4rem,5.5vw,4rem);line-height:1.08;margin:.7rem 0 1.2rem}
+  .hero h1 em{font-style:normal;color:var(--orange)}
+  .hero p{color:var(--muted);font-size:1.08rem;max-width:540px}
+  .hero-actions{display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap}
+  .hero-stats{display:flex;gap:2.4rem;margin-top:3rem;flex-wrap:wrap}
+  .stat b{font-size:1.9rem;color:#fff}
+  .stat small{display:block;color:var(--muted);font-size:.82rem}
+  .ball-art{position:relative;display:flex;justify-content:center}
+  .ball-art svg{width:min(420px,80%);filter:drop-shadow(0 30px 60px rgba(0,0,0,.5));animation:float 5s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+
+  /* generic cards */
+  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:2.5rem}
+  .card{background:var(--navy2);border:1px solid var(--line);border-radius:18px;padding:1.8rem;transition:.3s}
+  .card:hover{transform:translateY(-6px);border-color:rgba(255,107,26,.5)}
+  .card h3{margin:.6rem 0 .5rem;font-size:1.2rem}
+  .card p{color:var(--muted);font-size:.95rem}
+  .icon{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-size:1.5rem;
+    background:linear-gradient(135deg,rgba(255,107,26,.25),rgba(255,183,3,.15))}
+
+  /* programs */
+  .program .tag{display:inline-block;font-size:.75rem;font-weight:700;letter-spacing:.08em;color:var(--gold);background:rgba(255,183,3,.12);border-radius:999px;padding:.25rem .8rem;margin-bottom:.4rem}
+
+  /* pricing */
+  .price{position:relative;text-align:left}
+  .price .amount{font-size:2.2rem;font-weight:800;margin:.5rem 0}
+  .price .amount small{font-size:.85rem;color:var(--muted);font-weight:400}
+  .price ul{list-style:none;margin:1rem 0;display:grid;gap:.5rem}
+  .price li::before{content:"✓";color:var(--orange);font-weight:800;margin-right:.6rem}
+  .price.featured{border-color:var(--orange);background:linear-gradient(180deg,rgba(255,107,26,.12),var(--navy2))}
+  .ribbon{position:absolute;top:-12px;right:18px;background:var(--orange);color:#fff;font-size:.72rem;font-weight:800;padding:.3rem .9rem;border-radius:999px;letter-spacing:.06em}
+
+  /* coaches */
+  .coach{display:flex;gap:1rem;align-items:center}
+  .avatar{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:1.3rem;
+    background:linear-gradient(135deg,var(--orange),var(--gold));color:#1a1208;flex:none}
+
+  /* schedule */
+  table{width:100%;border-collapse:collapse;margin-top:2rem;font-size:.95rem}
+  th,td{padding:.85rem 1rem;text-align:left;border-bottom:1px solid var(--line)}
+  th{color:var(--gold);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase}
+  tr:hover td{background:rgba(255,255,255,.03)}
+
+  /* testimonials */
+  .quote{font-style:italic}
+  .stars{color:var(--gold);letter-spacing:.2em;margin-bottom:.6rem}
+  .who{display:flex;align-items:center;gap:.8rem;margin-top:1.2rem}
+
+  /* FAQ */
+  .faq-item{border:1px solid var(--line);border-radius:14px;background:var(--navy2);margin-bottom:.8rem;overflow:hidden}
+  .faq-q{width:100%;background:none;border:0;color:#fff;font-family:var(--font);font-size:1rem;font-weight:700;
+    padding:1.1rem 1.3rem;display:flex;justify-content:space-between;cursor:pointer;text-align:left}
+  .faq-q::after{content:"+";color:var(--orange);font-size:1.2rem;transition:.25s}
+  .faq-item.open .faq-q::after{transform:rotate(45deg)}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;color:var(--muted);padding:0 1.3rem}
+  .faq-item.open .faq-a{max-height:220px;padding-bottom:1.1rem}
+
+  /* contact */
+  .contact-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:2.5rem;margin-top:2rem}
+  .info-row{display:flex;gap:.9rem;align-items:flex-start;margin-bottom:1.3rem}
+  .info-row .icon{width:44px;height:44px;font-size:1.1rem}
+  form{display:grid;gap:1rem}
+  input,select,textarea{width:100%;background:#0d1526;border:1px solid var(--line);border-radius:12px;
+    padding:.85rem 1rem;color:#fff;font-family:var(--font);font-size:.95rem;transition:.2s}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--orange)}
+  label{font-size:.82rem;color:var(--muted);font-weight:600}
+  .form-note{font-size:.85rem;color:var(--gold)}
+  .toast{position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,var(--orange),var(--orange2));
+    color:#fff;padding:1rem 1.5rem;border-radius:12px;font-weight:700;box-shadow:0 12px 40px rgba(0,0,0,.5);
+    transform:translateY(150%);transition:.4s;z-index:200}
+  .toast.show{transform:translateY(0)}
+
+  footer{border-top:1px solid var(--line);padding:60px 0 30px;background:#080d17}
+  .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2rem}
+  .foot-grid h4{font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
+  .foot-grid ul{list-style:none;display:grid;gap:.5rem}
+  .foot-grid a,.foot-grid li{color:var(--muted);font-size:.9rem;cursor:pointer}
+  .foot-grid a:hover{color:#fff}
+  .copy{margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--line);color:#5c6b83;font-size:.82rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+
+  /* reveal animation */
+  .reveal{opacity:0;transform:translateY(28px);transition:.7s ease}
+  .reveal.visible{opacity:1;transform:none}
+
+  @media(max-width:900px){
+    nav ul,.nav-cta .btn{display:none}
+    .hamburger{display:block}
+    nav.open ul{display:flex;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;
+      background:rgba(11,18,32,.98);padding:1rem 2rem;border-bottom:1px solid var(--line)}
+    nav.open ul a{padding:.7rem 0;display:block}
+    .hero-grid,.contact-grid,.foot-grid{grid-template-columns:1fr}
+    .foot-grid{gap:1.5rem}
+    section{padding:64px 0}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header id="header">
+  <div class="wrap nav">
+    <a href="#home" class="logo">
+      <svg viewBox="0 0 48 48" fill="none">
+        <circle cx="24" cy="24" r="21" stroke="#ff6b1a" stroke-width="3" fill="#0b1220"/>
+        <path d="M24 3v42M3 24h42M9 9c9 9 21 21 30 30M39 9C30 18 18 30 9 39" stroke="#ff6b1a" stroke-width="2.4"/>
+      </svg>
+      Desta<span>Hoops</span> Hse
+    </a>
+    <nav id="nav">
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#programs">Programs</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#coaches">Coaches</a></li>
+        <li><a href="#schedule">Schedule</a></li>
+        <li><a href="#testimonials">Stories</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <a href="#contact" class="btn btn-primary">Book a Session</a>
+      <button class="hamburger" id="hamburger" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="home">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="kicker">Train Hard · Play Smart · Rise Together</span>
+      <h1>Basketball Coaching That Builds <em>Champions</em> On and Off the Court</h1>
+      <p>DestaHoops Hse offers elite basketball training for kids, teens and adults — from your first layup to college-level readiness. Skill development, strength & conditioning, and game IQ, all under one roof.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary">Start Free Trial</a>
+        <a href="#programs" class="btn btn-ghost">View Programs</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><b class="counter" data-target="500">0</b><small>Players Trained</small></div>
+        <div class="stat"><b class="counter" data-target="12">0</b><small>Years of Experience</small></div>
+        <div class="stat"><b class="counter" data-target="40">0</b><small>College Placements</small></div>
+        <div class="stat"><b class="counter" data-target="98" data-suffix="%">0</b><small>Parent Approval</small></div>
+      </div>
+    </div>
+    <div class="ball-art">
+      <svg viewBox="0 0 300 300" fill="none">
+        <circle cx="150" cy="150" r="140" fill="#1a2438" stroke="#ff6b1a" stroke-width="6"/>
+        <path d="M150 10v280M10 150h280M52 52c55 55 141 141 196 196M248 52C193 107 107 193 52 248" stroke="#ff6b1a" stroke-width="5"/>
+        <circle cx="150" cy="150" r="24" fill="#ff6b1a"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="kicker">About DestaHoops Hse</span>
+      <h2>More Than a Training Facility — A Basketball Family</h2>
+      <p class="sub">Founded by former pro players, DestaHoops Hse combines modern skill development with mentorship. We believe every athlete deserves personalized attention, real feedback, and a culture that demands effort and rewards growth.</p>
+    </div>
+    <div class="grid3">
+      <div class="card reveal"><div class="icon">🎯</div><h3>Personalized Development</h3><p>Every player gets an individualized skill assessment and a progressive training plan reviewed every 6 weeks.</p></div>
+      <div class="card reveal"><div class="icon">🏀</div><h3>Game-Real Reps</h3><p>Small-sided games, situational drills and live scrimmages so skills transfer directly to game night.</p></div>
+      <div class="card reveal"><div class="icon">🧠</div><h3>Character First</h3><p>Discipline, teamwork, leadership and academic accountability are coached as seriously as footwork.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROGRAMS ============ -->
+<section id="programs" style="background:var(--navy2)">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="kicker">Our Programs</span>
+      <h2>Find Your Lane</h2>
+      <p class="sub">From beginners to collegiate hopefuls, there's a track built for your goals.</p>
+    </div>
+    <div class="grid3">
+      <div class="card program reveal"><span class="tag">Ages 6–10</span><h3>Little Ballers Academy</h3><p>Fun-first fundamentals: coordination, dribbling, shooting form and a love for the game. 2 sessions/week.</p></div>
+      <div class="card program reveal"><span class="tag">Ages 11–14</span><h3>Skills Development Camp</h3><p>Position-specific skills, finishing, defense and decision-making. Includes weekly scrimmage league.</p></div>
+      <div class="card program reveal"><span class="tag">Ages 15–18</span><h3>Elite Prep Squad</h3><p>High-intensity training for school and club players. Strength & conditioning, film study and exposure prep.</p></div>
+      <div class="card program reveal"><span class="tag">1-on-1</span><h3>Private Coaching</h3><p>Hour-long private sessions tailored to your exact weaknesses, with video breakdown and progress reports.</p></div>
+      <div class="card program reveal"><span class="tag">Teams</span><h3>Team Training Packages</h3><p>Bring your whole squad. Systems installation, chemistry drills and coach-the-coaches support.</p></div>
+      <div class="card program reveal"><span class="tag">Adults</span><h3>Adult Hoops Fitness</h3><p>Cardio basketball for grown-ups who miss the game. Competitive runs every Friday night.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section id="pricing">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="kicker">Pricing</span>
+      <h2>Simple, Honest Plans</h2>
+      <p class="sub">No hidden fees. Cancel or switch plans anytime. First session is always free.</p>
+    </div>
+    <div class="grid3">
+      <div class="card price reveal">
+        <span class="kicker" style="font-size:.72rem">Starter</span>
+        <div class="amount">$49<small>/month</small></div>
+        <ul><li>2 group sessions per week</li><li>Open gym access</li><li>Basic progress tracking</li><li>Free trial session</li></ul>
+        <a href="#contact" class="btn btn-ghost">Choose Starter</a>
+      </div>
+      <div class="card price featured reveal">
+        <span class="ribbon">Most Popular</span>
+        <span class="kicker" style="font-size:.72rem">Pro</span>
+        <div class="amount">$99<small>/month</small></div>
+        <ul><li>4 group sessions per week</li><li>1 private session monthly</li><li>Strength & conditioning plan</li><li>Video analysis reports</li><li>Scrimmage league entry</li></ul>
+        <a href="#contact" class="btn btn-primary">Choose Pro</a>
+      </div>
+      <div class="card price reveal">
+        <span class="kicker" style="font-size:.72rem">Elite</span>
+        <div class="amount">$179<small>/month</small></div>
+        <ul><li>Unlimited group sessions</li><li>4 private sessions monthly</li><li>Custom nutrition guidance</li><li>College recruiting support</li><li>Priority booking</li></ul>
+        <a href="#contact" class="btn btn-ghost">Choose Elite</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COACHES ============ -->
+<section id="coaches" style="background:var(--navy2)">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="kicker">Meet the Coaches</span>
+      <h2>Learn From People Who've Lived It</h2>
+    </div>
+    <div class="grid3">
+      <div class="card reveal"><div class="coach"><div class="avatar">DD</div><div><h3 style="margin:0">Coach Desta "D" Mensah</h3><small style="color:var(--gold)">Head Coach · Founder</small></div></div><p style="margin-top:1rem">12 years pro experience overseas. Specializes in guard development and shooting mechanics.</p></div>
+      <div class="card reveal"><div class="coach"><div class="avatar">AK</div><div><h3 style="margin:0">Coach Amara K.</h3><small style="color:var(--gold)">Skills Trainer</small></div></div><p style="margin-top:1rem">Former college MVP. Footwork, finishing and elite ball-handling curriculum lead.</p></div>
+      <div class="card reveal"><div class="coach"><div class="avatar">JO</div><div><h3 style="margin:0">Coach Jay Okonkwo</h3><small style="color:var(--gold)">Strength & Conditioning</small></div></div><p style="margin-top:1rem">Certified S&C coach. Built athletic programs for 3 national junior teams.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCHEDULE ============ -->
+<section id="schedule">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="kicker">Weekly Schedule</span>
+      <h2>Find a Slot That Fits Your Life</h2>
+    </div>
+    <div class="card reveal" style="padding:0;overflow-x:auto">
+      <table>
+        <thead><tr><th>Program</th><th>Days</th><th>Time</th><th>Level</th><th>Spots</th></tr></thead>
+        <tbody>
+          <tr><td>Little Ballers Academy</td><td>Mon & Wed</td><td>4:00 – 5:00 PM</td><td>Beginner</td><td><span style="color:var(--gold)">Few left</span></td></tr>
+          <tr><td>Skills Development Camp</td><td>Tue & Thu</td><td>5:00 – 6:30 PM</td><td>Intermediate</td><td>Open</td></tr>
+          <tr><td>Elite Prep Squad</td><td>Mon, Wed, Fri</td><td>6:30 – 8:30 PM</td><td>Advanced</td><td><span style="color:var(--gold)">Few left</span></td></tr>
+          <tr><td>Private Coaching</td><td>By appointment</td><td>7:00 AM – 9:00 PM</td><td>All levels</td><td>Open</td></tr>
+          <tr><td>Adult Hoops Fitness</td><td>Friday</td><td>7:00 – 9:00 PM</td><td>All levels</td><td>Open</td></tr>
+          <tr><td>Open Scrimmage League</td><td>Saturday</td><td>10:00 AM – 1:00 PM</td><td>All levels</td><td>Open</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIALS ============ -->
+<section id="testimonials" style="background:var(--navy2)">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="kicker">Success Stories</span>
+      <h2>What Players & Parents Say</h2>
+    </div>
+    <div class="grid3">
+      <div class="card reveal"><div class="stars">★★★★★</div><p class="quote">"My son went from bench player to team captain in one season. The coaches actually care about school grades too."</p><div class="who"><div class="avatar" style="width:44px;height:44px;font-size:.95rem">W</div><div><b>Grace W.</b><br/><small style="color:var(--muted)">Parent · Skills Camp</small></div></div></div>
+      <div class="card reveal"><div class="stars">★★★★★</div><p class="quote">"The film sessions changed how I see the game. I earned a college scholarship offer six months after joining Elite Prep."</p><div class="who"><div class="avatar" style="width:44px;height:44px;font-size:.95rem">T</div><div><b>Tyrone M.</b><br/><small style="color:var(--muted)">Player · Elite Prep Squad</small></div></div></div>
+      <div class="card reveal"><div class="stars">★★★★★</div><p class="quote">"Friday night adult runs are the best part of my week. Great workout, great community, zero egos."</p><div class="who"><div class="avatar" style="width:44px;height:44px;font-size:.95rem">S</div><div><b>Sarah K.</b><br/><small style="color:var(--muted)">Member · Adult Hoops Fitness</small></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq">
+  <div class="wrap" style="max-width:820px">
+    <div class="reveal">
+      <span class="kicker">FAQ</span>
+      <h2>Questions? We've Got Answers</h2>
+    </div>
+    <div class="reveal">
+      <div class="faq-item"><button class="faq-q">Do I need my own equipment?</button><div class="faq-a">We provide balls and training equipment. Just bring indoor sports shoes, water and a towel. Bibs and vests are supplied for scrimmages.</div></div>
+      <div class="faq-item"><button class="faq-q">Can I try a session before committing?</button><div class="faq-a">Absolutely — your first group session is completely free with no obligation. Book it through the form below and we'll confirm within 24 hours.</div></div>
+      <div class="faq-item"><button class="faq-q">What ages do you coach?</button><div class="faq-a">From 6 years old up to adults. Players are grouped by both age and skill level so everyone trains at the right intensity.</div></div>
+      <div class="faq-item"><button class="faq-q">Do you offer sibling or team discounts?</button><div class="faq-a">Yes. We offer 15% off for siblings and custom rates for full teams (8+ players). Mention it in your booking and we'll sort the details.</div></div>
+      <div class="faq-item"><button class="faq-q">What happens if I miss a session?</button><div class="faq-a">Group sessions can be made up in any other matching class within the month. Private sessions can be rescheduled up to 12 hours before start time.</div></div>
+    </div>
+  </div>
+</section>
+
+ <!-- ============ CONTACT / BOOKING ============ -->
+<section id="contact" style="background:var(--navy2)">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="kicker">Get Started</span>
+      <h2>Book Your Free Trial Session</h2>
+      <p class="sub">Fill in the form and we'll match you with the right program and confirm your first session within 24 hours.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="info-row"><div class="icon">📍</div><div><b>Court Location</b><br/><small style="color:var(--muted)">Indoor Arena, Riverside Sports Complex<br/>Court 3 & 4</small><br/><a class="btn btn-ghost" style="margin-top:.6rem;padding:.45rem 1rem;font-size:.82rem" href="https://www.google.com/maps/dir/?api=1&destination=Nyayo+National+Stadium" target="_blank" rel="noopener">🧭 Get Directions</a></div></div>
+        <div class="info-row"><div class="icon">📞</div><div><b>Call / WhatsApp</b><br/><small style="color:var(--muted)"><a href="tel:+254741437377">+254 741 437 377</a></small></div></div>
+        <div class="info-row"><div class="icon">✉️</div><div><b>Email</b><br/><small style="color:var(--muted)">hello@destahoopshse.com</small></div></div>
+        <div class="info-row"><div class="icon">🕐</div><div><b>Office Hours</b><br/><small style="color:var(--muted)">Mon–Sat, 8:00 AM – 8:00 PM</small></div></div>
+        <a class="btn btn-primary" href="https://wa.me/254741437377?text=Hi%20DestaHoops%20Hse!%20I%20want%20to%20book%20a%20free%20trial%20session." target="_blank" rel="noopener" style="width:max-content;margin-bottom:1.3rem">💬 Chat on WhatsApp</a>
+      </div>
+      <form id="bookingForm" class="card reveal">
+        <div>
+          <label for="name">Player Name *</label>
+          <input id="name" required placeholder="e.g. Alex Kimani" />
+        </div>
+        <div>
+          <label for="email">Email *</label>
+          <input id="email" type="email" required placeholder="you@example.com" />
+        </div>
+        <div>
+          <label for="phone">Phone / WhatsApp</label>
+          <input id="phone" placeholder="+254 ..." />
+        </div>
+        <div>
+          <label for="program">Program of Interest *</label>
+          <select id="program" required>
+            <option value="">Select a program…</option>
+            <option>Little Ballers Academy (6–10)</option>
+            <option>Skills Development Camp (11–14)</option>
+            <option>Elite Prep Squad (15–18)</option>
+            <option>Private Coaching</option>
+            <option>Team Training Package</option>
+            <option>Adult Hoops Fitness</option>
+          </select>
+        </div>
+        <div>
+          <label for="plan">Membership Plan</label>
+          <select id="plan">
+            <option>Free trial first</option>
+            <option>Starter — $49/mo</option>
+            <option>Pro — $99/mo</option>
+            <option>Elite — $179/mo</option>
+          </select>
+        </div>
+        <div>
+          <label for="message">Goals / Notes</label>
+          <textarea id="message" rows="3" placeholder="Tell us about your experience and goals…"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="justify-self:start">Request Booking →</button>
+        <p class="form-note">We reply within 24 hours. No payment needed for the free trial.</p>
+      </form>
+      <div class="card reveal" style="padding:.5rem;grid-column:1 / -1">
+        <iframe
+          src="https://www.google.com/maps?q=Riverside+Sports+Complex&output=embed"
+          width="100%" height="320" style="border:0;border-radius:14px"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="DestaHoops Hse location"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a href="#home" class="logo" style="margin-bottom:1rem">
+          <svg viewBox="0 0 48 48" fill="none" width="32" height="32">
+            <circle cx="24" cy="24" r="21" stroke="#ff6b1a" stroke-width="3" fill="#0b1220"/>
+            <path d="M24 3v42M3 24h42M9 9c9 9 21 21 30 30M39 9C30 18 18 30 9 39" stroke="#ff6b1a" stroke-width="2.4"/>
+          </svg>
+          Desta<span>Hoops</span> Hse
+        </a>
+        <p style="color:var(--muted);font-size:.9rem;max-width:280px">Elite basketball coaching for all ages. Train hard, play smart, rise together.</p>
+      </div>
+      <div><h4>Explore</h4><ul>
+        <li><a href="#about">About</a></li><li><a href="#programs">Programs</a></li>
+        <li><a href="#pricing">Pricing</a></li><li><a href="#schedule">Schedule</a></li>
+      </ul></div>
+      <div><h4>Programs</h4><ul>
+        <li><a href="#programs">Little Ballers</a></li><li><a href="#programs">Skills Camp</a></li>
+        <li><a href="#programs">Elite Prep</a></li><li><a href="#programs">Private Coaching</a></li>
+      </ul></div>
+      <div><h4>Contact</h4><ul>
+        <li>+254 741 437 377</li><li>hello@destahoopshse.com</li>
+        <li>Riverside Sports Complex</li><li><a href="#contact">Book a Session</a></li>
+      </ul></div>
+    </div>
+    <div class="copy">
+      <span>© 2026 DestaHoops Hse. All rights reserved.</span>
+      <span>Built with 🏀 by DestaHoops Hse</span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast">✔ Booking request sent! We'll be in touch within 24 hours.</div>
+
+<script>
+  // Sticky nav
+  const header = document.getElementById('header');
+  addEventListener('scroll', () => header.classList.toggle('scrolled', scrollY > 40));
+
+  // Mobile menu
+  const nav = document.getElementById('nav');
+  document.getElementById('hamburger').addEventListener('click', () => nav.classList.toggle('open'));
+  nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => nav.classList.remove('open')));
+
+  // Reveal on scroll
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: .12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Animated counters
+  const cio = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target, target = +el.dataset.target, suffix = el.dataset.suffix || '+';
+      let cur = 0;
+      const step = () => {
+        cur += Math.max(1, target / 40);
+        if (cur >= target) { el.textContent = target + suffix; return; }
+        el.textContent = Math.floor(cur) + suffix;
+        requestAnimationFrame(step);
+      };
+      step(); cio.unobserve(el);
+    });
+  }, { threshold: .5 });
+  document.querySelectorAll('.counter').forEach(el => cio.observe(el));
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.parentElement;
+      document.querySelectorAll('.faq-item').forEach(i => { if (i !== item) i.classList.remove('open'); });
+      item.classList.toggle('open');
+    });
+  });
+
+  // Booking form
+  document.getElementById('bookingForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const data = {
+      name: document.getElementById('name').value,
+      email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value,
+      program: document.getElementById('program').value,
+      plan: document.getElementById('plan').value,
+      message: document.getElementById('message').value,
+      date: new Date().toISOString()
+    };
+    try {
+      const bookings = JSON.parse(localStorage.getItem('destahoops_bookings') || '[]');
+      bookings.push(data);
+      localStorage.setItem('destahoops_bookings', JSON.stringify(bookings));
+    } catch (_) { /* storage unavailable — form still demos fine */ }
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 4000);
+    e.target.reset();
+  });
+</script>
+</body>
+</html>
